@@ -1,15 +1,25 @@
 import structures.Word
 import utility.*
 
+/**
+ * The main entry point of Owoify.
+ * Invoke Owoifer.owoify() to owoify an arbitrary string.
+ */
 object Owoifier {
     private val wordRegex = Regex("[^\\s]+")
     private val spaceRegex = Regex("\\s+")
 
+    /**
+     * The primary and the only function in Owoifier object.
+     * @param source The source string to owoify.
+     * @param level Optional. Specifies the owoness level.
+     * @return The owoified string.
+     */
     fun owoify(source: String, level: OwoifyLevel = OwoifyLevel.Owo): String {
         val wordMatches = wordRegex.findAll(source)
         val spaceMatches = spaceRegex.findAll(source)
-        var words = wordMatches.map { it -> Word(it.groups[0]!!.value) }
-        var spaces = spaceMatches.map { it -> Word(it.groups[0]!!.value) }
+        var words = wordMatches.map { Word(it.groups[0]!!.value) }
+        var spaces = spaceMatches.map { Word(it.groups[0]!!.value) }
 
         words = words.map(fun (w: Word): Word {
             var _word = w

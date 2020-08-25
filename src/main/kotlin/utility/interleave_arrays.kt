@@ -1,5 +1,11 @@
 package utility
 
+/**
+ * Helper function to interleave and combine a sequence of strings and a sequence of spaces.
+ * @param a The first sequence.
+ * @param b The second sequence.
+ * @return An interleaved list.
+ */
 fun <T> interleaveArrays(a: Sequence<T>, b: Sequence<T>): List<T> {
     val arr = mutableListOf<T>()
     var observed = a.toMutableList()
