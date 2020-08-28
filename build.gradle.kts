@@ -5,7 +5,7 @@ plugins {
     id("com.jfrog.bintray") version "1.8.5"
 }
 
-project.group = "org.tetsukiSyu"
+project.group = "org.deadshot465"
 project.version = "1.0"
 
 repositories {
@@ -58,7 +58,7 @@ publishing {
                         appendNode("distribution", "repo")
                     }
                     appendNode("developers").appendNode("developer").apply {
-                        appendNode("id", "tetsuki_syu1126")
+                        appendNode("id", "deadshot465")
                         appendNode("name", "Tetsuki Syu")
                     }
                     appendNode("scm").apply {
@@ -80,7 +80,7 @@ bintray {
     pkg.apply {
         repo = "owoifyKt"
         name = project.name
-        userOrg = "tetsuki_syu1126"
+        userOrg = "chehui-chou"
         githubRepo = "deadshot465/owoifyKt"
         vcsUrl = "https://github.com/deadshot465/owoifyKt"
         description = "Turning your worst nightmare into a Kotlin package https://codepen.io/newbeetf2/pen/yLLaNPZ"

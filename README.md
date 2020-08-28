@@ -17,7 +17,15 @@ Seriously, if you have seen my other ports, you probably have already known the 
 Because it doesn't seem that Kotlin has any owoify package. And since I have already ported it to several languages, I might as well just keep porting it.
 
 ## Install instructions
-Work in progress.
+Put this in your `build.gradle` or `build.gradle.kts`:
+```kotlin
+repositories {
+    maven {
+        setUrl("https://dl.bintray.com/chehui-chou/owoifyKt/")
+    }
+}
+```
+You might also want to add `jcenter()` to your `settings.gradle` or `settings.gradle.kts`.
 
 ## Usage
 owoifyKt is implemented as a function inside the `Owoifier` object. That means you don't need to create an instance of any class; instead, just call the method `owoify` with the object's name.
