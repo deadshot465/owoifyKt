@@ -1,6 +1,6 @@
-package utility
+package org.deadshot465.owoify.utility
 
-import structures.Word
+import org.deadshot465.owoify.structures.Word
 import kotlin.random.Random
 
 val O_TO_OWO = Regex("o")

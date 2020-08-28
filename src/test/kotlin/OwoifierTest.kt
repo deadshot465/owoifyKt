@@ -1,3 +1,5 @@
+import org.deadshot465.owoify.Owoifier
+import org.deadshot465.owoify.OwoifyLevel
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 

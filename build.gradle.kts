@@ -6,7 +6,7 @@ plugins {
 }
 
 project.group = "org.deadshot465"
-project.version = "1.0"
+project.version = "1.1"
 
 repositories {
     jcenter()
@@ -94,7 +94,7 @@ bintray {
         version.apply {
             name = project.version.toString()
             desc = "Turning your worst nightmare into a Kotlin package https://codepen.io/newbeetf2/pen/yLLaNPZ"
-            released = "2020-08-28"
+            released = "2020-08-29"
             vcsTag = project.version.toString()
         }
     }

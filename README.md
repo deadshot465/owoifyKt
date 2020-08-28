@@ -27,9 +27,19 @@ repositories {
 ```
 You might also want to add `jcenter()` to your `settings.gradle` or `settings.gradle.kts`.
 
+Then, add this to your `build.gradle` or `build.gradle.kts` as well.
+```kotlin
+dependencies {
+    implementation("org.deadshot465", "owoifyKt", "1.1")
+}
+```
+
 ## Usage
 owoifyKt is implemented as a function inside the `Owoifier` object. That means you don't need to create an instance of any class; instead, just call the method `owoify` with the object's name.
 ```kotlin
+import org.deadshot465.owoify.Owoifier
+import org.deadshot465.owoify.OwoifyLevel
+
 fun main() {
     println(Owoifier.owoify("This is the string to owo! Kinda cute isn't it?"))
     println(Owoifier.owoify("This is the string to owo! Kinda cute isn't it?", OwoifyLevel.Uvu))

@@ -1,4 +1,4 @@
-package structures
+package org.deadshot465.owoify.structures
 
 /**
  * The basic unit of the owoify function.

@@ -1,6 +1,6 @@
-package utility
+package org.deadshot465.owoify.utility
 
-import structures.Word
+import org.deadshot465.owoify.structures.Word
 
 val SPECIFIC_WORD_MAPPING_LIST = listOf<(Word) -> Word>(
     ::mapFucToFwuc,

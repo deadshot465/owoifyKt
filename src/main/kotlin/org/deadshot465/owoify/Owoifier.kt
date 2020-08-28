@@ -1,5 +1,7 @@
-import structures.Word
-import utility.*
+package org.deadshot465.owoify
+
+import org.deadshot465.owoify.structures.Word
+import org.deadshot465.owoify.utility.*
 
 /**
  * The main entry point of Owoify.
