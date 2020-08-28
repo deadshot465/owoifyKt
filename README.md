@@ -36,13 +36,32 @@ dependencies {
 
 ## Usage
 owoifyKt is implemented as a function inside the `Owoifier` object. That means you don't need to create an instance of any class; instead, just call the method `owoify` with the object's name.
+
+Kotlin:
 ```kotlin
 import org.deadshot465.owoify.Owoifier
 import org.deadshot465.owoify.OwoifyLevel
 
 fun main() {
-    println(Owoifier.owoify("This is the string to owo! Kinda cute isn't it?"))
-    println(Owoifier.owoify("This is the string to owo! Kinda cute isn't it?", OwoifyLevel.Uvu))
+    println(Owoifier.owoify("This is the string to owo! Kinda cute, isn't it?"))
+    println(Owoifier.owoify("This is the string to owo! Kinda cute, isn't it?", OwoifyLevel.Uvu))
+}
+
+// Output:
+// This is teh stwing two owo! Kinda cute, isn't it?
+// fwis is teh stwing two owo(/ =ω=)/ Kinda cute(/ =ω=)/ isn't it?
+```
+
+Java:
+```java
+import org.deadshot465.owoify.Owoifier;
+import org.deadshot465.owoify.OwoifyLevel;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(Owoifier.INSTANCE.owoify("This is the string to owo! Kinda cute, isn't it?", OwoifyLevel.Owo));
+        System.out.println(Owoifier.INSTANCE.owoify("This is the string to owo! Kinda cute, isn't it?", OwoifyLevel.Uvu));
+    }
 }
 
 // Output:
@@ -53,7 +72,7 @@ fun main() {
 ## Disclaimer
 As usual, I'm writing this package for both practicing and bots' needs. Performance is **NOT** guaranteed.
 
-That being said, all regular expressions are declared beforehand rather than being declared inside a function. This module utilizes `sync.once` to make sure all initialization of regular expressions will only run once. That should be able to avoid the performance cost of building regular expressions every time the method is called.
+That being said, all regular expressions are declared beforehand rather than being declared inside a function. That should be able to avoid the performance cost of building regular expressions every time the method is called.
 
 ## See also
 - [owoify-js](https://github.com/mohan-cao/owoify-js) - The original owoify-js repository.
