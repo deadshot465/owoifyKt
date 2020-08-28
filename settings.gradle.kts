@@ -5,5 +5,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'owoifyKt'
+rootProject.name = "owoifyKt"
 
