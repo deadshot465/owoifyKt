@@ -173,7 +173,7 @@ fun mapSpecificConsonantsOToLetterAndWo(input: Word): Word {
         .replace(SPECIFIC_CONSONANTS_O_TO_LETTER_AND_WO_LOWER, "$1wo")
         .replace(SPECIFIC_CONSONANTS_O_TO_LETTER_AND_WO_UPPER, fun (str1: String, str2: String): String {
             var msg = str1
-            msg += if (str2.toUpperCase() == str2) {
+            msg += if (str2.uppercase() == str2) {
                 "W"
             } else {
                 "w"

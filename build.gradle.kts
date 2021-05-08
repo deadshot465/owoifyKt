@@ -5,6 +5,7 @@ plugins {
     `maven-publish`
     signing
     kotlin("jvm") version "1.5.0"
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id("org.jetbrains.dokka") version "1.4.32"
 }
 
@@ -22,11 +23,13 @@ ext["sonatypeStagingProfileId"] = ""
 
 val secretPropertiesFile = project.rootProject.file("local.properties")
 if (secretPropertiesFile.exists()) {
-    val p = Properties()
-    val fs = FileInputStream(secretPropertiesFile)
-    p.load(fs)
-    fs.close()
-    p.forEach { name, value -> ext[name.toString()] = value.toString() }
+    secretPropertiesFile.reader().use {
+        Properties().apply {
+            load(it)
+        }
+    }.onEach { (name, value) ->
+        ext[name.toString()] = value
+    }
 } else {
     ext["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
     ext["signing.password"] = System.getenv("SIGNING_PASSWORD")
@@ -68,6 +71,19 @@ java {
     from(sourceSets.getByName("main").allSource)
 }*/
 
+fun getExtraString(name: String) = ext[name]?.toString()
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username.set(getExtraString("ossrhUsername"))
+            password.set(getExtraString("ossrhPassword"))
+        }
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("owoifyKt") {
@@ -83,8 +99,10 @@ publishing {
                 url.set("https://github.com/deadshot465/owoifyKt")
 
                 licenses {
-                    name.set("MIT License")
-                    url.set("https://opensource.org/licenses/MIT")
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
                 }
 
                 developers {
