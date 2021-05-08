@@ -11,6 +11,8 @@ plugins {
 project.group = "io.github.deadshot465"
 project.version = "1.0"
 
+val isReleaseVersion = !project.version.toString().endsWith("SNAPSHOT")
+
 ext["signing.keyId"] = ""
 ext["signing.password"] = ""
 ext["signing.secretKeyRingFile"] = ""
@@ -43,7 +45,6 @@ dependencies {
     testImplementation("junit:junit:4.13")
     dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
     dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
-
 }
 
 tasks {
@@ -58,16 +59,14 @@ tasks {
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
+    withSourcesJar()
+    withJavadocJar()
 }
 
-val sourcesJar by tasks.creating(Jar::class) {
+/*val sourcesJar by tasks.creating(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.getByName("main").allSource)
-}
-
-val javadocJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("javadoc")
-}
+}*/
 
 publishing {
     publications {
@@ -75,10 +74,8 @@ publishing {
             groupId = project.group.toString()
             artifactId = project.name
             version = project.version.toString()
-            from(components["java"])
 
-            artifact(sourcesJar)
-            artifact(javadocJar)
+            from(components["java"])
 
             pom {
                 name.set(rootProject.name)
@@ -86,8 +83,8 @@ publishing {
                 url.set("https://github.com/deadshot465/owoifyKt")
 
                 licenses {
-                    name.set("MIT")
-                    url.set("https://opensource.org/licenses/mit-license.php")
+                    name.set("MIT License")
+                    url.set("https://opensource.org/licenses/MIT")
                 }
 
                 developers {
@@ -110,4 +107,10 @@ publishing {
 
 signing {
     sign(publishing.publications)
+}
+
+tasks.withType(Sign::class) {
+    onlyIf {
+        isReleaseVersion
+    }
 }
