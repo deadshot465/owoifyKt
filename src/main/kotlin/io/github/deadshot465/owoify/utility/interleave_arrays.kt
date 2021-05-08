@@ -1,4 +1,4 @@
-package org.deadshot465.owoify.utility
+package io.github.deadshot465.owoify.utility
 
 /**
  * Helper function to interleave and combine a sequence of strings and a sequence of spaces.

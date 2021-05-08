@@ -1,11 +1,11 @@
-package org.deadshot465.owoify
+package io.github.deadshot465.owoify
 
-import org.deadshot465.owoify.structures.Word
-import org.deadshot465.owoify.utility.*
+import io.github.deadshot465.owoify.structures.Word
+import io.github.deadshot465.owoify.utility.*
 
 /**
  * The main entry point of Owoify.
- * Invoke Owoifer.owoify() to owoify an arbitrary string.
+ * Invoke Owoifier.owoify() to owoify an arbitrary string.
  */
 object Owoifier {
     private val wordRegex = Regex("[^\\s]+")
@@ -21,40 +21,40 @@ object Owoifier {
         val wordMatches = wordRegex.findAll(source)
         val spaceMatches = spaceRegex.findAll(source)
         var words = wordMatches.map { Word(it.groups[0]!!.value) }
-        var spaces = spaceMatches.map { Word(it.groups[0]!!.value) }
+        val spaces = spaceMatches.map { Word(it.groups[0]!!.value) }
 
         words = words.map(fun (w: Word): Word {
-            var _word = w
+            var innerWord = w
             for (func in SPECIFIC_WORD_MAPPING_LIST) {
-                _word = func(_word)
+                innerWord = func(innerWord)
             }
             when (level) {
                 OwoifyLevel.Owo -> {
                     for (func in OWO_MAPPING_LIST) {
-                        _word = func(_word)
+                        innerWord = func(innerWord)
                     }
                 }
                 OwoifyLevel.Uwu -> {
                     for (func in UWU_MAPPING_LIST) {
-                        _word = func(_word)
+                        innerWord = func(innerWord)
                     }
                     for (func in OWO_MAPPING_LIST) {
-                        _word = func(_word)
+                        innerWord = func(innerWord)
                     }
                 }
                 OwoifyLevel.Uvu -> {
                     for (func in UVU_MAPPING_LIST) {
-                        _word = func(_word)
+                        innerWord = func(innerWord)
                     }
                     for (func in UWU_MAPPING_LIST) {
-                        _word = func(_word)
+                        innerWord = func(innerWord)
                     }
                     for (func in OWO_MAPPING_LIST) {
-                        _word = func(_word)
+                        innerWord = func(innerWord)
                     }
                 }
             }
-            return _word
+            return innerWord
         })
 
         val result = interleaveArrays(words, spaces)

@@ -1,21 +1,49 @@
+import java.util.Properties
+import java.io.*
+
 plugins {
     `maven-publish`
-    kotlin("jvm") version "1.4.0"
-    id("org.jetbrains.dokka") version "1.4.0-rc"
-    id("com.jfrog.bintray") version "1.8.5"
+    signing
+    kotlin("jvm") version "1.5.0"
+    id("org.jetbrains.dokka") version "1.4.32"
 }
 
-project.group = "org.deadshot465"
-project.version = "1.1"
+project.group = "io.github.deadshot465"
+project.version = "1.0"
+
+ext["signing.keyId"] = ""
+ext["signing.password"] = ""
+ext["signing.secretKeyRingFile"] = ""
+ext["ossrhUsername"] = ""
+ext["ossrhPassword"] = ""
+ext["sonatypeStagingProfileId"] = ""
+
+val secretPropertiesFile = project.rootProject.file("local.properties")
+if (secretPropertiesFile.exists()) {
+    val p = Properties()
+    val fs = FileInputStream(secretPropertiesFile)
+    p.load(fs)
+    fs.close()
+    p.forEach { name, value -> ext[name.toString()] = value.toString() }
+} else {
+    ext["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
+    ext["signing.password"] = System.getenv("SIGNING_PASSWORD")
+    ext["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
+    ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
+    ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
+    ext["sonatypeStagingProfileId"] = System.getenv("SONATYPE_STAGING_PROFILE_ID")
+}
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation(group = "io.github.cdimascio", name = "java-dotenv", version = "5.2.1")
-    testImplementation("junit:junit:4.12")
+    implementation(kotlin("stdlib"))
+    testImplementation("junit:junit:4.13")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
+    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
+
 }
 
 tasks {
@@ -37,6 +65,10 @@ val sourcesJar by tasks.creating(Jar::class) {
     from(sourceSets.getByName("main").allSource)
 }
 
+val javadocJar by tasks.creating(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
 publishing {
     publications {
         create<MavenPublication>("owoifyKt") {
@@ -46,56 +78,36 @@ publishing {
             from(components["java"])
 
             artifact(sourcesJar)
+            artifact(javadocJar)
 
-            pom.withXml {
-                asNode().apply {
-                    appendNode("description", "Turning your worst nightmare into a Kotlin package https://codepen.io/newbeetf2/pen/yLLaNPZ")
-                    appendNode("name", rootProject.name)
-                    appendNode("url", "https://github.com/deadshot465/owoifyKt")
-                    appendNode("licenses").appendNode("license").apply {
-                        appendNode("name", "MIT")
-                        appendNode("url", "https://opensource.org/licenses/mit-license.php")
-                        appendNode("distribution", "repo")
+            pom {
+                name.set(rootProject.name)
+                description.set("A simple library that turns any string into nonsensical babyspeak, ported from mohan-cao's owoify-js.")
+                url.set("https://github.com/deadshot465/owoifyKt")
+
+                licenses {
+                    name.set("MIT")
+                    url.set("https://opensource.org/licenses/mit-license.php")
+                }
+
+                developers {
+                    developer {
+                        name.set("Chehui Chou")
+                        id.set("deadshot465")
+                        email.set("tetsuki.syu1315@gmail.com")
                     }
-                    appendNode("developers").appendNode("developer").apply {
-                        appendNode("id", "deadshot465")
-                        appendNode("name", "Tetsuki Syu")
-                    }
-                    appendNode("scm").apply {
-                        appendNode("url", "https://github.com/deadshot465/owoifyKt")
-                    }
+                }
+
+                scm {
+                    connection.set("scm:git:github.com/deadshot465/owoifyKt.git")
+                    developerConnection.set("scm:git:ssh://github.com/deadshot465/owoifyKt.git")
+                    url.set("https://github.com/deadshot465/owoifyKt")
                 }
             }
         }
     }
 }
 
-bintray {
-    user = project.findProperty("bintrayUser").toString()
-    key = project.findProperty("bintrayKey").toString()
-    publish = true
-
-    setPublications("owoifyKt")
-
-    pkg.apply {
-        repo = "owoifyKt"
-        name = project.name
-        userOrg = "chehui-chou"
-        githubRepo = "deadshot465/owoifyKt"
-        vcsUrl = "https://github.com/deadshot465/owoifyKt"
-        description = "Turning your worst nightmare into a Kotlin package https://codepen.io/newbeetf2/pen/yLLaNPZ"
-        setLabels("kotlin", "owoify", "owoness", "owo", "uwu", "uvu", "babyspeak", "nonsensical", "fun")
-        setLicenses("MIT")
-        desc = description
-        websiteUrl = "https://github.com/deadshot465/owoifyKt"
-        issueTrackerUrl = "https://github.com/deadshot465/owoifyKt/issues"
-        githubReleaseNotesFile = "README.md"
-
-        version.apply {
-            name = project.version.toString()
-            desc = "Turning your worst nightmare into a Kotlin package https://codepen.io/newbeetf2/pen/yLLaNPZ"
-            released = "2020-08-29"
-            vcsTag = project.version.toString()
-        }
-    }
+signing {
+    sign(publishing.publications)
 }

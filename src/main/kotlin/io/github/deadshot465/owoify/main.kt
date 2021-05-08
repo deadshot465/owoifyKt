@@ -1,4 +1,4 @@
-package org.deadshot465.owoify
+package io.github.deadshot465.owoify
 
 fun main() {
     println(Owoifier.owoify("This is the string to owo! Kinda cute isn't it?"))
